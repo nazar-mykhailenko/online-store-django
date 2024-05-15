@@ -23,7 +23,7 @@ def cart_add(request, product_id):
         cart_item.quantity += 1
         cart_item.save()
     else:
-        CartItem.objects.create(user=request.user, product=product_id, quantity=1)
+        CartItem.objects.create(user=request.user, product_id=product_id, quantity=1)
 
     return redirect('cart:cart')
 

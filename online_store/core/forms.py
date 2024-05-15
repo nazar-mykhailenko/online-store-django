@@ -49,7 +49,7 @@ class ItemFilterForm(forms.Form):
         'class':input_classes
     }))
     category = forms.ChoiceField(required=False, widget=forms.Select(attrs={
-        'class':input_classes
+        'class':'form-control'
     }))
     price_min = forms.DecimalField(max_digits=8, decimal_places=2, required=False, widget=forms.NumberInput(attrs={
         'class':input_classes
