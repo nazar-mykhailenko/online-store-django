@@ -39,7 +39,7 @@
 					<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
 						{% if request.user.is_authenticated %}
 						<li><a class="nav-link" href="#"><img src="{% static "images/user.svg" %}"></a></li>
-						<li><a class="nav-link" href="cart.html"><img src="{% static "images/cart.svg" %}"></a></li>
+                        <li><a class="nav-link" href="{% url "cart:cart" %}"><img src="{% static "images/cart.svg" %}"></a></li>
 						<li class='mx-2 '><a href="{% url "core:logout" %}" class="btn btn-black">Logout</a></li>
 						{% else %}
 						<li class='mx-2 '><a href="{% url "core:login" %}" class="btn btn-primary">Login</a></li>
@@ -48,7 +48,7 @@
 					</ul>
 				</div>
 			</div>
-				
+
 		</nav>
         <div class="p-5">
             {% block content %}
