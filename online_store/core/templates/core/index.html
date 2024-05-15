@@ -9,15 +9,18 @@
 		      	<div class="row">
                     {% for item in items %}
                     <div class="col-12 col-md-4 col-lg-3 mb-5">
-						<a class="product-item" href="#">
-							<img src="{{item.image.url}}" class="img-fluid product-thumbnail">
-							<h3 class="product-title">{{item.name}}</h3>
-							<strong class="product-price">{{item.price}}</strong>
-
-							<span class="icon-cross">
-								<img src="{% static "images/cross.svg" %}" class="img-fluid">
-							</span>
-						</a>
+                        <div class="product-item">
+                            <a href="#" style="text-decoration: none;">
+                                <img src="{{item.image.url}}" class="img-fluid product-thumbnail">
+                                <h3 class="product-title">{{item.name}}</h3>
+                                <strong class="product-price">{{item.price}}</strong>
+                            </a>
+                            <a href="{% url "cart:cart-add" product_id=item.id %}">
+                                <span class="icon-cross">
+                                    <img src="{% static "images/cross.svg" %}" class="img-fluid">
+                                </span>
+                            </a>
+                        </div>
 					</div>
                     {% endfor %}
                 </div>
