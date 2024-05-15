@@ -8,8 +8,6 @@
     <form action="." class='d-flex flex-column ' method="post">
         {% csrf_token %}
 
-        {{ form.non_field_errors}}
-
         <div class="mb-3">
             <label for="" class="inline-block mb-2">Username</label><br>
             {{form.username}}
