@@ -1,0 +1,11 @@
+name: cicd-app
+services:
+  online-store:
+    container_name: online-store
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    env_file:
+      - .env

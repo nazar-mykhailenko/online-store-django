@@ -31,6 +31,14 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -40,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'core'
 ]
 
 MIDDLEWARE = [
@@ -117,8 +126,13 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 STATIC_URL = 'static/'
+
+STATICFILES_DIR = [
+    BASE_DIR / 'static_files'
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
