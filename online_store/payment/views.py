@@ -23,7 +23,6 @@ gateway = braintree.BraintreeGateway(
 
 @login_required
 def billing(request, amount):
-    print(settings.BRAINTREE_MERCHANT_ID)
     client_payment_token = gateway.client_token.generate()
     context = {
         "client_token": client_payment_token,
