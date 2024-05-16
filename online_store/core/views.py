@@ -2,7 +2,7 @@ from django.shortcuts import redirect, render
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 
-from .forms import SignupForm, ItemFilterForm
+from .forms import ItemFilterForm
 from .models import Item, Category
 
 # Create your views here.
@@ -31,22 +31,3 @@ def details(request, pk):
         'item': item
     })
 
-def signup(request):
-    if request.method == 'POST':
-        form = SignupForm(request.POST)
-
-        if form.is_valid():
-            form.save()
-
-            return redirect('/login/')
-    else:
-        form = SignupForm()
-
-    return render(request, 'core/signup.html', {
-        'form': form
-    })
-
-@login_required
-def log_out(request):
-    logout(request)
-    return redirect('/')
