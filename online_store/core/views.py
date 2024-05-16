@@ -26,7 +26,9 @@ def index(request):
     })
 
 def details(request, pk):
-    item = Item.objects.get(pk=pk)
+    item = Item.objects.filter(pk=pk).first()
+    if not item:
+        return redirect('core:index')
     return render(request, 'core/details.html', {
         'item': item
     })
