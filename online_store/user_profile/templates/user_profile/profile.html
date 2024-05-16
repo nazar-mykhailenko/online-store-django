@@ -36,6 +36,7 @@
     <table class="table">
                       <thead>
                         <tr>
+                            <th>Number</th>
                             <th>Status</th>
                             <th>Order date</th>
                             <th>Total price</th>
@@ -44,15 +45,19 @@
                       <tbody>
                         {% for order in orders %}
                         <tr>
-                        <a href="#">
-                          <td class="product-name">
-                            <h2 class="h5 text-black">{{order.status}}</h2>
-                          </td>
-                          <td class="product-name">
-                            <h2 class="h5 text-black">{{order.date}}</h2>
-                          </td>
-                          <td>{{order.unit_price}}</td>
+                            <td>{{order.id}}</td>
+                            <td class="product-name">
+                                <h2 class="h5 text-black">{{order.status}}</h2>
+                            </td>
+                            <td class="product-name">
+                                <h2 class="h5 text-black">{{order.date}}</h2>
+                            </td>
+                            <td>{{order.unit_price}}</td>
+                            <td>
+                            <a href="{% url "user_profile:order_details" order.id %}">
+                                See details
                         </a>
+                        </td>
                         </tr>
                         {% endfor %}
                       </tbody>

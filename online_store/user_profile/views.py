@@ -3,7 +3,7 @@ from django.shortcuts import redirect, render
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 
-from payment.models import Order
+from payment.models import Order, OrderDetails
 
 from .forms import SignupForm, UpdateUserForm
 
@@ -44,6 +44,15 @@ def profile(request):
         'orders': orders,
     })
 
+@login_required
+def order_details(request, id):
+    order = Order.objects.get(pk=id)
+    order_dets = OrderDetails.objects.filter(order=order)
+
+    return render(request, 'user_profile/order_details.html', {
+        'order': order,
+        'order_details': order_dets
+    })
 
 
 class ChangePasswordView(PasswordChangeView):
