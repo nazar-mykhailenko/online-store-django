@@ -10,7 +10,7 @@
 <body>
 
 <div id="dropin-container"></div>
-<button id="submit-button" class="button button--small button--green">Purchase</button>
+<button id="submit-button" class="btn btn-sm btn-outline-black">Purchase</button>
 <button id="google-pay-button" style="display: none;"></button>
 
 <script src="https://js.braintreegateway.com/web/dropin/1.22.0/js/dropin.min.js"></script>
@@ -50,14 +50,16 @@
         };
         const json = JSON.stringify(data)
 
-        fetch(paymentUrl, {
+         return fetch(paymentUrl, {
           method: 'POST',
           headers: headers,
           body: json,
-        }).then(async response => response.text())
-          .then(result => {
-              window.location.href = result
-          });
+        })
+      }).then(res => {
+          if (res.redirected) {
+              console.log('foo')
+              window.location.href = res.url
+          }
       }).catch((error) => {
         console.error('Error requesting payment method:', error);
       });
