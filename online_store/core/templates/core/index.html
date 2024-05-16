@@ -44,7 +44,7 @@
                     {% for item in items %}
                     <div class="col-12 col-md-4 col-lg-3 mb-5">
                         <div class="product-item">
-                            <a href="#" style="text-decoration: none;">
+                            <a href="{% url "core:details" item.id %}" style="text-decoration: none;">
                                 <img src="{{item.image.url}}" class="img-fluid product-thumbnail">
                                 <h3 class="product-title">{{item.name}}</h3>
                                 <strong class="product-price">{{item.price}}</strong>

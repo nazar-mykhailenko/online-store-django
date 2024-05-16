@@ -25,6 +25,12 @@ def index(request):
         'filter_form': filter_form
     })
 
+def details(request, pk):
+    item = Item.objects.get(pk=pk)
+    return render(request, 'core/details.html', {
+        'item': item
+    })
+
 def signup(request):
     if request.method == 'POST':
         form = SignupForm(request.POST)

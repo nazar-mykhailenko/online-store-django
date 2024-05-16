@@ -1,0 +1,52 @@
+{% extends "core/base.html" %}
+
+{% block title %}{{item.name}}{% endblock title %}
+{% load static %}
+{% block content %}
+    <div class="why-choose-section">
+			<div class="container">
+				<div class="row justify-content-between align-items-center">
+					<div class="col-lg-6">
+						<h2 class="section-title">{{item.name}} </h2>
+						<p>{{item.description}} </p>
+
+						<div class="row my-5">
+							<div class="col-6 col-md-6">
+								<div class="feature">
+									<div class="icon">
+										<img src="{% static "images/dollar.svg" %}" width=46px height=46px alt="Dollar icon" class="imf-fluid">
+									</div>
+									<h3>Price</h3>
+									<p>{{item.price}}</p>
+								</div>
+							</div>
+
+							<div class="col-6 col-md-6">
+								<div class="feature">
+									<div class="icon">
+										<img src="{% static "images/category.svg" %}" width=46px height=46px alt="Category icon" class="imf-fluid">
+									</div>
+									<h3>Category</h3>
+									<p>{{item.category}}</p>
+								</div>
+							</div>
+
+							<div class="col-6 col-md-6">
+								<div class="feature">
+									<a href="{% url "cart:cart-add" product_id=item.id %}" class='btn btn-secondary '>Add to cart</a>
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+					<div class="col-lg-5">
+						<div class="img-wrap">
+							<img src="{{item.image.url}}" alt="Image" class="img-fluid">
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+{% endblock content %}
