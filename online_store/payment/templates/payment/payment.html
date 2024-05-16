@@ -1,0 +1,67 @@
+{% extends "core/base.html" %}
+
+{% block title %}Payment{% endblock title %}
+
+{% block content %}
+<head>
+  <meta charset="utf-8" />
+  <meta name="csrf-token" content="{{ csrf_token }}">
+</head>
+<body>
+
+<div id="dropin-container"></div>
+<button id="submit-button" class="button button--small button--green">Purchase</button>
+<button id="google-pay-button" style="display: none;"></button>
+
+<script src="https://js.braintreegateway.com/web/dropin/1.22.0/js/dropin.min.js"></script>
+
+<script>
+    let button = document.querySelector('#submit-button');
+    const amountToPay = '{{ amount }}';
+    const paymentUrl = '/complete_payment';
+
+    braintree.dropin.create({
+      authorization: "{{ client_token }}",
+      container: '#dropin-container'
+    }).then((dropinInstance) => {
+
+      button.addEventListener('click', function (event) {
+        event.preventDefault();
+        startPayment(dropinInstance);
+      });
+
+    }).catch((error) => {
+      console.error('Error creating Braintree Drop-in:', error);
+    });
+
+    function startPayment(dropinInstance) {
+      const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+      const headers = new Headers({
+        'X-CSRFToken': csrfToken,
+        'Content-Type': 'application/json',
+      });
+
+      dropinInstance.requestPaymentMethod().then((payload) => {
+        const data = {
+          paymentMethodNonce: payload.nonce,
+          amount: amountToPay,
+          currency: "USD",
+          description: `some description of purchase`,
+        };
+        const json = JSON.stringify(data)
+
+        fetch(paymentUrl, {
+          method: 'POST',
+          headers: headers,
+          body: json,
+        }).then(async response => response.text())
+          .then(result => {
+              window.location.href = result
+          });
+      }).catch((error) => {
+        console.error('Error requesting payment method:', error);
+      });
+    }
+</script>
+</body>
+{% endblock content %}
