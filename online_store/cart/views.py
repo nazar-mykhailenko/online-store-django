@@ -1,6 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 
+from core.models import Item
+
 from .models import CartItem
 
 @login_required
@@ -18,6 +20,10 @@ def cart(request):
 @login_required
 def cart_add(request, product_id):
     current_user_id = request.user.id
+    product_count = Item.objects.filter(id=product_id).count()
+    if product_count == 0:
+        return redirect('cart:cart')
+
     cart_item = CartItem.objects.filter(user_id=current_user_id).filter(product_id=product_id).first()
     if cart_item:
         cart_item.quantity += 1
@@ -33,7 +39,7 @@ def cart_remove(request, product_id):
     current_user_id = request.user.id
     cart_item = CartItem.objects.filter(user_id=current_user_id).filter(product_id=product_id).first()
     if not cart_item:
-        return redirect('core:cart')
+        return redirect('cart:cart')
 
     if cart_item.quantity == 1:
         cart_item.delete()
