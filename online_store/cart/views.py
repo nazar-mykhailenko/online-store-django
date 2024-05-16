@@ -33,7 +33,7 @@ def cart_remove(request, product_id):
     current_user_id = request.user.id
     cart_item = CartItem.objects.filter(user_id=current_user_id).filter(product_id=product_id).first()
     if not cart_item:
-        return redirect('core:cart')
+        return redirect('cart:cart')
 
     if cart_item.quantity == 1:
         cart_item.delete()
