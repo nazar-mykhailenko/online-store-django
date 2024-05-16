@@ -79,6 +79,7 @@ def save_order(current_user_id, amount):
             item=cart_item.product,
             quantity=cart_item.quantity
         )
+        cart_item.delete()
 
 
 def payment_success(request):
