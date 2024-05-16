@@ -32,4 +32,29 @@
         <a href="{% url "user_profile:change_password" %}" class='btn btn-secondary align-self-start '>Change password</a>
         </div>
     </form>
+    <h1 class="my-5">Your orders</h1>
+    <table class="table">
+                      <thead>
+                        <tr>
+                            <th>Status</th>
+                            <th>Order date</th>
+                            <th>Total price</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for order in orders %}
+                        <tr>
+                        <a href="#">
+                          <td class="product-name">
+                            <h2 class="h5 text-black">{{order.status}}</h2>
+                          </td>
+                          <td class="product-name">
+                            <h2 class="h5 text-black">{{order.date}}</h2>
+                          </td>
+                          <td>{{order.unit_price}}</td>
+                        </a>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
 {% endblock content %}

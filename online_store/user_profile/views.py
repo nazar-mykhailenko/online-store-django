@@ -3,6 +3,8 @@ from django.shortcuts import redirect, render
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 
+from payment.models import Order
+
 from .forms import SignupForm, UpdateUserForm
 
 # Create your views here.
@@ -35,8 +37,11 @@ def profile(request):
     else:
         form = UpdateUserForm(instance=request.user)
 
+    orders = Order.objects.filter(user=request.user)
+
     return render(request, 'user_profile/profile.html', {
         'form': form,
+        'orders': orders,
     })
 
 
