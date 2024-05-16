@@ -51,9 +51,9 @@ class TestViews(TestCase):
         self.assertEqual(response.context['total'], expected_total)
         self.assertListEqual(list(response.context['cart_items']), [self.cart_item])
 
-    def test_cart_add_redirects_to_cart(self):
+    def test_cart_add_redirects_to_cart_when_item_exists(self):
         # Arrange
-        url = reverse('cart:cart-add', args=[1])
+        url = reverse('cart:cart-add', args=[self.first_item.id])
         expected_url_to_redirect_to = reverse('cart:cart')
         # Act
         response = self.client.get(url)
@@ -62,7 +62,7 @@ class TestViews(TestCase):
 
     def test_cart_add_adds_item_to_cart_when_it_is_not_in_cart(self):
         # Arrange
-        url = reverse('cart:cart-add', args=[2])
+        url = reverse('cart:cart-add', args=[self.second_item.id])
         # Act
         self.client.get(url)
         # Assert
@@ -70,16 +70,33 @@ class TestViews(TestCase):
 
     def test_cart_add_increases_quantity_when_item_is_already_in_cart(self):
         # Arrange
-        url = reverse('cart:cart-add', args=[1])
+        url = reverse('cart:cart-add', args=[self.first_item.id])
         # Act
         self.client.get(url)
         # Assert
         self.assertEqual(CartItem.objects.count(), 1)
         self.assertEqual(CartItem.objects.first().quantity, 3)
 
-    def test_cart_remove_redirects_to_cart(self):
+    def test_cart_add_redirects_to_cart_when_item_does_not_exist(self):
         # Arrange
-        url = reverse('cart:cart-remove', args=[1])
+        url = reverse('cart:cart-add', args=[1000])
+        expected_url_to_redirect_to = reverse('cart:cart')
+        # Act
+        response = self.client.get(url)
+        # Assert
+        self.assertRedirects(response, expected_url_to_redirect_to)
+
+    def test_cart_add_does_not_add_item_when_item_does_not_exist(self):
+        # Arrange
+        url = reverse('cart:cart-add', args=[1000])
+        # Act
+        response = self.client.get(url)
+        # Assert
+        self.assertEqual(CartItem.objects.count(), 1)
+
+    def test_cart_remove_redirects_to_cart_when_item_is_in_cart(self):
+        # Arrange
+        url = reverse('cart:cart-remove', args=[self.first_item.id])
         expected_url_to_redirect_to = reverse('cart:cart')
         # Act
         response = self.client.get(url)
@@ -88,7 +105,7 @@ class TestViews(TestCase):
 
     def test_cart_remove_decreases_quantity_when_item_quantity_is_greater_than_one(self):
         # Arrange
-        url = reverse('cart:cart-remove', args=[1])
+        url = reverse('cart:cart-remove', args=[self.first_item.id])
         # Act
         self.client.get(url)
         # Assert
@@ -99,15 +116,32 @@ class TestViews(TestCase):
         # Arrange
         self.cart_item.quantity = 1
         self.cart_item.save()
-        url = reverse('cart:cart-remove', args=[1])
+        url = reverse('cart:cart-remove', args=[self.first_item.id])
         # Act
         self.client.get(url)
         # Assert
         self.assertEqual(CartItem.objects.count(), 0)
 
-    def test_cart_remove_completely_redirects_to_cart(self):
+    def test_cart_remove_redirects_to_cart_when_item_is_not_in_cart(self):
         # Arrange
-        url = reverse('cart:cart-remove-all', args=[1])
+        url = reverse('cart:cart-remove', args=[self.second_item.id])
+        expected_url_to_redirect_to = reverse('cart:cart')
+        # Act
+        response = self.client.get(url)
+        # Assert
+        self.assertRedirects(response, expected_url_to_redirect_to)
+
+    def test_cart_remove_does_not_remove_item_when_item_is_not_in_cart(self):
+        # Arrange
+        url = reverse('cart:cart-remove', args=[self.second_item.id])
+        # Act
+        response = self.client.get(url)
+        # Assert
+        self.assertEqual(CartItem.objects.count(), 1)
+
+    def test_cart_remove_completely_redirects_to_cart_when_item_is_in_cart(self):
+        # Arrange
+        url = reverse('cart:cart-remove-all', args=[self.first_item.id])
         expected_url_to_redirect_to = reverse('cart:cart')
         # Act
         response = self.client.get(url)
@@ -116,8 +150,25 @@ class TestViews(TestCase):
 
     def test_cart_remove_completely_removes_item_from_cart(self):
         # Arrange
-        url = reverse('cart:cart-remove-all', args=[1])
+        url = reverse('cart:cart-remove-all', args=[self.first_item.id])
         # Act
         self.client.get(url)
         # Assert
         self.assertEqual(CartItem.objects.count(), 0)
+
+    def test_cart_remove_completely_redirects_to_cart_when_item_is_not_in_cart(self):
+        # Arrange
+        url = reverse('cart:cart-remove-all', args=[self.second_item.id])
+        expected_url_to_redirect_to = reverse('cart:cart')
+        # Act
+        response = self.client.get(url)
+        # Assert
+        self.assertRedirects(response, expected_url_to_redirect_to)
+
+    def test_cart_remove_completely_does_not_remove_item_when_item_is_not_in_cart(self):
+        # Arrange
+        url = reverse('cart:cart-remove-all', args=[self.second_item.id])
+        # Act
+        response = self.client.get(url)
+        # Assert
+        self.assertEqual(CartItem.objects.count(), 1)
