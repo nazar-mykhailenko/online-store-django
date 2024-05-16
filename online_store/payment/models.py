@@ -16,3 +16,6 @@ class OrderDetails(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     quantity = models.IntegerField()
 
+    @property
+    def total(self):
+        return self.item.price * self.quantity

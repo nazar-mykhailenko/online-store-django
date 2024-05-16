@@ -1,0 +1,67 @@
+{% extends "core/base.html" %}
+{% block title %}Order {{order.id}} details{% endblock title %}
+{% block content %}
+ <div class="site-blocks-table">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="product-thumbnail">Image</th>
+                        <th class="product-name">Product</th>
+                        <th class="product-price">Price</th>
+                        <th class="product-quantity">Quantity</th>
+                        <th class="product-total">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order_detail in order_details %}
+                    <tr>
+                        <td class="product-thumbnail">
+                            <img src="{{ order_detail.item.image.url }}" alt="" class="img-fluid">
+                        </td>
+                        <td class="product-name">
+                            <h2 class="h5 text-black">
+                                <a href="{% url "core:details" pk=order_detail.item.id %}" style="text-decoration: none">
+                                    {{ order_detail.item.name }}
+                                </a>
+                            </h2>
+                        </td>
+                        <td>${{ order_detail.item.price }}</td>
+                        <td>
+                          {{order_detail.quantity}}
+                        </td>
+                        <td>${{order_detail.total}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="row mb-5">
+            <div class="col-md-6">
+                <a class="btn btn-outline-black btn-sm btn-block" href="{% url "user_profile:profile" %}">Back to profile</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 pl-5">
+        <div class="row justify-content-end">
+            <div class="col-md-7">
+                <div class="row">
+                    <div class="col-md-12 text-right mb-5">
+                    </div>
+                </div>
+                <div class="row mb-5">
+                    <div class="col-md-6">
+                        <h3 class="text-black ">Total</h3>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <h3 class="text-black">${{ order.unit_price }}</h3>
+                    </div>
+                </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
