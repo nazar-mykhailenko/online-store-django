@@ -43,9 +43,12 @@
                         <td class="product-thumbnail">
                             <img src="{{ cart_item.product.image.url }}" alt="Image" class="img-fluid">
                         </td>
-                        <!-- TODO: link to product page -->
                         <td class="product-name">
-                            <h2 class="h5 text-black">{{ cart_item.product.name }}</h2>
+                            <h2 class="h5 text-black">
+                                <a href="{% url "core:details" pk=cart_item.product.id %}" style="text-decoration: none">
+                                    {{ cart_item.product.name }}
+                                </a>
+                            </h2>
                         </td>
                         <td>${{ cart_item.product.price }}</td>
                         <td>
