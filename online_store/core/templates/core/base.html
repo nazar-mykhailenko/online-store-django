@@ -38,7 +38,7 @@
 
 					<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
 						{% if request.user.is_authenticated %}
-						<li><a class="nav-link" href="#"><img src="{% static "images/user.svg" %}"></a></li>
+						<li><a class="nav-link" href="{% url "user_profile:profile" %}"><img src="{% static "images/user.svg" %}"></a></li>
                         <li><a class="nav-link" href="{% url "cart:cart" %}"><img src="{% static "images/cart.svg" %}"></a></li>
 						<li class='mx-2 '><a href="{% url "user_profile:logout" %}" class="btn btn-black">Logout</a></li>
 						{% else %}

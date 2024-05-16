@@ -1,8 +1,9 @@
+from django.contrib.auth.views import PasswordChangeView
 from django.shortcuts import redirect, render
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 
-from .forms import SignupForm
+from .forms import SignupForm, UpdateUserForm
 
 # Create your views here.
 def signup(request):
@@ -24,3 +25,23 @@ def signup(request):
 def log_out(request):
     logout(request)
     return redirect('/')
+
+@login_required
+def profile(request):
+    if request.method == 'POST':
+        form = UpdateUserForm(data=request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+    else:
+        form = UpdateUserForm(instance=request.user)
+
+    return render(request, 'user_profile/profile.html', {
+        'form': form,
+    })
+
+
+
+class ChangePasswordView(PasswordChangeView):
+    template_name = 'user_profile/change_password.html'
+    success_message = "Successfully Changed Your Password"
+    success_url = '/profile/'

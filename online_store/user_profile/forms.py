@@ -41,3 +41,18 @@ class SignupForm(UserCreationForm):
         'placeholder': 'Repeat password',
         'class': input_classes
     }))
+
+class UpdateUserForm(forms.ModelForm):
+    username = forms.CharField(max_length=100,
+                               required=True,
+                               widget=forms.TextInput(attrs={
+                                   'class': input_classes
+                               }))
+    email = forms.EmailField(required=True,
+                             widget=forms.TextInput(attrs={
+                                 'class': input_classes
+                             }))
+
+    class Meta:
+        model = User
+        fields = ['username', 'email']
