@@ -2,32 +2,32 @@ from django.shortcuts import redirect, render
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 
-from .forms import SignupForm
-from .models import Item
+from .forms import ItemFilterForm
+from .models import Item, Category
 
 # Create your views here.
 def index(request):
     items = Item.objects.filter()
-    return render(request, "core/index.html",{
-        "items" : items
-    })
-
-def signup(request):
+    choises = [('', '')] + list(map(lambda c: (c.id, c.name), Category.objects.filter()))
     if request.method == 'POST':
-        form = SignupForm(request.POST)
+        filter_form = ItemFilterForm(request.POST)
 
-        if form.is_valid():
-            form.save()
-
-            return redirect('/login/')
+        filter_form.fields['category'].choices = choises
+        if filter_form.is_valid():
+            items = filter_form.filter_items(items)
     else:
-        form = SignupForm()
+        filter_form = ItemFilterForm()
+        filter_form.fields['category'].choices = choises
 
-    return render(request, 'core/signup.html', {
-        'form': form
+
+    return render(request, "core/index.html",{
+        "items" : items,
+        'filter_form': filter_form
     })
 
-@login_required
-def log_out(request):
-    logout(request)
-    return redirect('/')
+def details(request, pk):
+    item = Item.objects.get(pk=pk)
+    return render(request, 'core/details.html', {
+        'item': item
+    })
+
